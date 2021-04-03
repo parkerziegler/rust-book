@@ -39,6 +39,11 @@ fn main() {
         ..user3
     };
 
+    println!(
+        "{}, {}, {}",
+        user4.email, user4.username, user4.sign_in_count
+    );
+
     let black = Color(0, 0, 0);
     let green_channel = black.1;
     println!("The green channel of black is: {}", green_channel);
