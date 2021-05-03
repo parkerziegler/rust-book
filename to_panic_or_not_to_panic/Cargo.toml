@@ -1,5 +1,5 @@
 [package]
-name = "recoverable-errors-with-resullt"
+name = "to_panic_or_not_to_panic"
 version = "0.1.0"
 authors = ["parkerziegler <parker.ziegler@formidable.com>"]
 edition = "2018"
