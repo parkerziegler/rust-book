@@ -1,4 +1,16 @@
-fn largest<T>(list: &[T]) -> &T {
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+    let mut largest = list[0];
+
+    for &num in list {
+        if num > largest {
+            largest = num;
+        }
+    }
+
+    largest
+}
+
+fn largest_return_reference<T: PartialOrd>(list: &[T]) -> &T {
     let mut largest = &list[0];
 
     for num in list {
@@ -7,7 +19,7 @@ fn largest<T>(list: &[T]) -> &T {
         }
     }
 
-    largest
+    &largest
 }
 
 fn main() {
@@ -66,7 +78,7 @@ struct MixedPoint<T, U> {
 
 // You can also define generics on a struct and on a particular method on that struct.
 impl<T, U> MixedPoint<T, U> {
-    pub fn mixup<V, W>(&self, other: MixedPoint<V, W>) -> MixedPoint<T, W> {
+    pub fn mixup<V, W>(self, other: MixedPoint<V, W>) -> MixedPoint<T, W> {
         MixedPoint {
             x: self.x,
             y: other.y,
