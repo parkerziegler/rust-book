@@ -23,16 +23,45 @@ impl Config {
 // error case, run will return some value that implements the Error trait
 // rather than a specific type.
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    println!("Searching for {}", config.query);
-    println!("In file {}", config.filename);
-
     // The ? operator ensures we return a Result type from read_to_string
     // but leave it up to the caller to handle the error.
     let contents = fs::read_to_string(config.filename)?;
 
-    println!("With text:\n{}", contents);
+    for line in search(&config.query, &contents) {
+        println!("{}", line);
+    }
 
     // Indicate that we're calling run for its side effects only by returning
     // the Ok enum member wrapping the unit type.
     Ok(())
+}
+
+// We use a lifetime parameter to indicate that the returned vector from search
+// lives as long as the contents reference.
+pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    let mut results = Vec::new();
+
+    for line in contents.lines() {
+        if line.contains(query) {
+            results.push(line);
+        }
+    }
+
+    results
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn one_result() {
+        let query = "duct";
+        let contents = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+
+        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+    }
 }
