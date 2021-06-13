@@ -43,28 +43,32 @@ fn generate_workout(intensity: u32, random_number: u32) {
 // and only execute the closure when requested. We use the trait
 // bound Fn to signal that the generic type T must implement the
 // Fn trait to be a valid value for calculation.
-struct Cacher<T>
+struct Cacher<T, K, V>
 where
-    T: Fn(u32) -> u32,
+    T: Fn(K) -> V,
+    K: Eq + std::hash::Hash,
+    V: Copy,
 {
     calculation: T,
-    value: HashMap<u32, u32>,
+    value: HashMap<K, V>,
 }
 
 // Note that all methods below are private, ensuring that no code
 // that instantiates a Cacher can modify or access internals.
-impl<T> Cacher<T>
+impl<T, K, V> Cacher<T, K, V>
 where
-    T: Fn(u32) -> u32,
+    T: Fn(K) -> V,
+    K: Eq + std::hash::Hash + Copy,
+    V: Copy,
 {
-    fn new(calculation: T) -> Cacher<T> {
+    fn new(calculation: T) -> Cacher<T, K, V> {
         Cacher {
             calculation,
             value: HashMap::new(),
         }
     }
 
-    fn value(&mut self, arg: u32) -> u32 {
+    fn value(&mut self, arg: K) -> V {
         match self.value.get(&arg) {
             Some(v) => *v,
             None => {
@@ -83,5 +87,16 @@ fn call_with_different_values() {
     let _v1 = c.value(1);
     let v2 = c.value(2);
 
+    assert_eq!(v2, 2);
+}
+
+#[test]
+fn works_with_different_types() {
+    let mut c = Cacher::new(|a: &str| a.len());
+
+    let v1 = c.value("Hello");
+    let v2 = c.value("Hi");
+
+    assert_eq!(v1, 5);
     assert_eq!(v2, 2);
 }
