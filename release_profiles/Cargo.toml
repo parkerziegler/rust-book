@@ -1,0 +1,16 @@
+[package]
+name = "release_profiles"
+version = "0.1.0"
+authors = ["parkerziegler <parkerellisziegler@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+# Define overrides for release profiles in Cargo.toml.
+# For example, the override below ensures we apply an optimization
+# level of 1 for dev builds, applying more optimizations than the
+# default dev configuration (0), but fewer than release (3).
+[profile.dev]
+opt-level = 1
