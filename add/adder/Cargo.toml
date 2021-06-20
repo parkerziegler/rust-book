@@ -1,0 +1,15 @@
+[package]
+name = "adder"
+version = "0.1.0"
+authors = ["parkerziegler <parkerellisziegler@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+# Here, we specify add-one, a library crate in the same Cargo
+# workspace, as a dependency of the adder crate. Note that each
+# crate in a Cargo workspace must be published individually using
+# cargo publish.
+add-one = { path = "../add-one" }

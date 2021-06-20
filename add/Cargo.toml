@@ -1,0 +1,11 @@
+# The workspace key below indicates we're using Cargo workspaces
+# to manage this project.
+[workspace]
+
+# The members key indicates which library or binary crates are
+# included in the workspace. All compiled artifacts from all crates
+# end up in the top-level target directory.
+members = [
+    "adder",
+    "add-one",
+]
