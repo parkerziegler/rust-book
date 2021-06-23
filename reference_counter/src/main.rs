@@ -3,6 +3,8 @@
 // can reference the same data without taking ownership or
 // needing to specify lifetime parameters. The referenced data
 // won't be cleaned up until no more references point to it.
+//
+// Note that Rc can only be used in single threaded contexts.
 #[derive(Debug)]
 enum List {
     Cons(i32, Rc<List>),
