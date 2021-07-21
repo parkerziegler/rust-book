@@ -1,10 +1,10 @@
+use server::ThreadPool;
 use std::fs;
 use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
 use std::thread;
 use std::time::Duration;
-use server::ThreadPool;
 
 fn main() {
     // Bind the TcpListener to local IP on port 7878. The bind function
@@ -15,7 +15,9 @@ fn main() {
     // The incoming method returns an iterator of TcpStreams. A single stream
     // is a connection between client and server. A connection is the name for the
     // full request / response process.
-    for stream in listener.incoming() {
+    //
+    // To simulate graceful shutdown, we only take two incoming TCP connections.
+    for stream in listener.incoming().take(2) {
         let stream = stream.unwrap();
 
         // Spawn a new connection for each incoming request (connection).
